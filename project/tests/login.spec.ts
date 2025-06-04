@@ -13,7 +13,7 @@ test.describe("login tests", () => {
     // Assertions
     // 1. Verify exact dashboard URL
     await expect(page).toHaveURL(
-      "/https://orangehr.demo.diagonal.software/web/index.php/dashboard/index"
+      "https://orangehr.demo.diagonal.software/web/index.php/dashboard/index"
     );
   });
   //Test script for incorrect credentials
@@ -21,7 +21,8 @@ test.describe("login tests", () => {
     const loginPage = new LoginPage(page);
     await loginPage.goto();
     await loginPage.login(InvalidCredentials.username,InvalidCredentials.password)
-    await expect(page).toHaveURL("/https://orangehr.demo.diagonal.software/web/index.php/dashboard/index")
+    await expect(page.locator('.oxd-alert-content-text'))
+  .toHaveText('Invalid credentials');
   })
 
 });
