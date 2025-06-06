@@ -5,7 +5,7 @@ import { ValidCredentials, InvalidCredentials } from "../fixtures/employee";
 test.describe("login tests", () => {
   test("Successful login with valid credentials", async ({ page }) => {
     const loginPage = new LoginPage(page);
-  //  console.log("here")
+    //  console.log("here")
     //Test steps
     await loginPage.goto();
     await loginPage.login(ValidCredentials.username, ValidCredentials.password);
@@ -17,12 +17,15 @@ test.describe("login tests", () => {
     );
   });
   //Test script for incorrect credentials
-  test("Incorrect credentials with error message",async({page})=>{
+  test("Incorrect credentials with error message", async ({ page }) => {
     const loginPage = new LoginPage(page);
     await loginPage.goto();
-    await loginPage.login(InvalidCredentials.username,InvalidCredentials.password)
-    await expect(page.locator('.oxd-alert-content-text'))
-  .toHaveText('Invalid credentials');
-  })
-
+    await loginPage.login(
+      InvalidCredentials.username,
+      InvalidCredentials.password
+    );
+    await expect(page.locator(".oxd-alert-content-text")).toHaveText(
+      "Invalid credentials"
+    );
+  });
 });

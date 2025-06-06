@@ -6,8 +6,6 @@ export class LoginPage {
   readonly passwordInput: Locator;
   readonly loginButton: Locator;
   readonly errorMessage: Locator;
-  // readonly UserProfileMenu: Locator
-  // readonly logoutButton:Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -20,7 +18,9 @@ export class LoginPage {
     this.loginButton = page.locator(
       "xpath=//button[@class='oxd-button oxd-button--medium oxd-button--main orangehrm-login-button']"
     );
-    this.errorMessage = page.locator("xpath=//p[contains(@class, 'oxd-alert-content-text')]")
+    this.errorMessage = page.locator(
+      "xpath=//p[contains(@class, 'oxd-alert-content-text')]"
+    );
   }
   async goto(): Promise<void> {
     // Add your base URL here
@@ -35,13 +35,14 @@ export class LoginPage {
 
   async login(username: string, password: string): Promise<void> {
     try {
-      await this.usernameInput.waitFor({ state: "visible", timeout: 5000});
+      await this.usernameInput.waitFor({ state: "visible", timeout: 5000 });
       await this.usernameInput.fill(username);
       await this.passwordInput.waitFor({ state: "visible", timeout: 5000 });
       await this.passwordInput.fill(password);
       await this.loginButton.waitFor({ state: "visible", timeout: 5000 });
       await this.loginButton.click();
-    } catch (error:any) {
+      await this.page.waitForTimeout(10000);
+    } catch (error: any) {
       throw new Error(`Unable to Login to system,${error}`);
     }
   }
