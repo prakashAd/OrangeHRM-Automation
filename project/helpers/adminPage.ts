@@ -20,8 +20,10 @@ export class AdminPage {
   readonly clickToSave: Locator;
   readonly essOption: Locator;
   readonly selectEmployeeName: Locator;
-  readonly rowLocator: Locator;
-  readonly tableLocator: Locator;
+  readonly targetRow: Locator;
+  readonly updateButton: Locator;
+  readonly updateUserForm: Locator;
+  readonly saveButton: Locator;
   readonly deleteButton: Locator;
 
   constructor(page: Page) {
@@ -54,7 +56,7 @@ export class AdminPage {
 
     this.EmployNameInput = page.getByPlaceholder("Type for hints...");
     this.selectEmployeeName = page.locator(
-      "xpath=//span [text()='Paypal Raj Bhandari']" 
+      "xpath=//span [text()='Paypal Raj Bhandari']"
     );
     this.userNameInput = page.locator(
       "xpath =(//input[contains(@class, 'oxd-input') and @autocomplete='off'])[1] "
@@ -63,12 +65,19 @@ export class AdminPage {
     this.confirmPasswordInput = page.locator(
       "xpath=(//input[@type='password'])[2]"
     );
-    this.clickToSave = page.locator(
-      "xpath=//button[text()=' Save ']"
-    );
+    this.clickToSave = page.locator("xpath=//button[text()=' Save ']");
     this.essOption = page.locator("xpath=//span[text()='ESS']");
-    this.tableLocator = page.locator("xpath=//div[@class='orangehrm-container']")
-    this.deleteButton = page.locator("xpath=//div[normalize-space()='admin@diagonal.software']/div[1]")
+    this.targetRow = page.locator(
+      "xpath=//div[contains(@class,'oxd-table-row')][.//div[text()='admin@diagonal.softwaree'] and .//div[text()='Test 1']]"
+    );
+    this.updateButton = this.targetRow.locator("button i.bi-pencil-fill");
+    this.updateUserForm = page.locator(
+      "xpath=//div[@class='orangehrm-background-container']"
+    );
+    this.saveButton = page.locator("xpath=//button[normalize-space()='Save' and @type='submit']");
+    this.deleteButton = this.targetRow.locator(
+      "button.oxd-icon-button i.bi-trash"
+    );
   }
 
   async adduser(
@@ -110,33 +119,46 @@ export class AdminPage {
       await this.userNameInput.fill(username); //it will fill username
       await this.passwordInput.fill(password); //it will fill password
       await this.confirmPasswordInput.fill(confirmPassword); //it will fillconfirmpassword
-      await this.clickToSave.click();  //it will click to save button
+      await this.clickToSave.click(); //it will click to save button
     } catch (error: any) {
       throw new Error(`Unable to add user,${error}`);
     }
   }
-   async deleteUser() {
+
+  async updateUser() {
     try {
       await this.adminButton.waitFor({ state: "visible", timeout: 5000 });
       await this.adminButton.click(); // it will click on the Admin option of the sidebar
-      await this.tableLocator.waitFor({state:"visible", timeout:10000}) // wait for the table data to be visibles
-      
-      // const username = 'admin@diagonal.softwaree';
-      await this.deleteButton.click()
+      await this.targetRow.waitFor({ state: "visible", timeout: 10000 }); // wait for the targeted table data to be visibles
+      await this.updateButton.click(); //it will click on update icon
+      await this.updateUserForm.waitFor({ state: "visible", timeout: 20000 }); // it will waits till the update user form appears
+      await this.saveButton.waitFor({state:"visible",timeout:5000})
+      await this.saveButton.click(); //it will click to save button
 
-      
+    } catch (error: any) {
+      throw new Error(`Unable to Update user,${error}`);
+    }
+  }
+  async deleteUser() {
+    try {
+      await this.adminButton.waitFor({ state: "visible", timeout: 5000 });
+      await this.adminButton.click(); // it will click on the Admin option of the sidebar
+      await this.targetRow.waitFor({ state: "visible", timeout: 20000 }); // wait for the targeted table data to be visibles
+      await this.deleteButton.click();
     } catch (error: any) {
       throw new Error(`Unable to delete user,${error}`);
     }
   }
   async logout() {
-    try { 
-      await this.page.goto('https://orangehr.demo.diagonal.software/web/index.php/admin/viewSystemUsers');
-       await this.page.locator('table').scrollIntoViewIfNeeded();
-       const rowLocator = this.page.locator('table tbody tr', {
-    has:this.page.locator(`text="${UserData.username}"`)
-  });
-   await rowLocator.waitFor({ state: 'visible', timeout: 5000 });
+    try {
+      await this.page.goto(
+        "https://orangehr.demo.diagonal.software/web/index.php/admin/viewSystemUsers"
+      );
+      await this.page.locator("table").scrollIntoViewIfNeeded();
+      const rowLocator = this.page.locator("table tbody tr", {
+        has: this.page.locator(`text="${UserData.username}"`),
+      });
+      await rowLocator.waitFor({ state: "visible", timeout: 5000 });
     } catch (error: any) {
       throw new Error(`Unable to Delete user,${error}`);
     }

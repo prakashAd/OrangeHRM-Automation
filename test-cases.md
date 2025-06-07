@@ -32,7 +32,15 @@ Steps:
 3 Click Save
 Expected: Updated details are saved and displayed
 
-Test Case 5: Verify user can logout from system
+Test Case 5: Verify system user is deleted Successfully
+Precondition: Employee exists in the list
+Steps:
+1.Locate a user and click the delete icon.
+2.Confirm the deletion in the confirmation dialog.
+Expected Result: The user is removed from the list.
+
+
+Test Case 6: Verify user can logout from system
 Precondition: User has valid credentials (Admin)
 Steps:
 1 Navigate to login page
