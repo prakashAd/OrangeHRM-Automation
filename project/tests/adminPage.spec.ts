@@ -1,0 +1,31 @@
+import { test } from "@playwright/test";
+import { AdminPage } from "../helpers/adminPage";
+import { LoginPage } from "../helpers/loginPage";
+import { UserData, ValidCredentials } from "../fixtures/testData";
+
+  // Addition of new user
+  test("Create new user", async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    const adminPage = new AdminPage(page);
+
+    await loginPage.goto();
+    await loginPage.login(ValidCredentials.username, ValidCredentials.password);
+    await adminPage.adduser(
+      UserData.employeeName,
+      UserData.username,
+      UserData.password,
+      UserData.confirmPassword
+    );
+    await page.waitForTimeout(2000);
+
+  });
+  //Deletion of user
+  test("Delete new user", async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    const adminPage = new AdminPage(page);
+
+    await loginPage.goto();
+    await loginPage.login(ValidCredentials.username, ValidCredentials.password);
+    await adminPage.deleteUser()
+
+  });

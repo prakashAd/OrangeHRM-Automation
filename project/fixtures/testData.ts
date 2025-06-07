@@ -9,7 +9,7 @@ export const InvalidCredentials = {
 };
 export const UserData = {
   employeeName: "Paypal Raj Bhandari",
-  username: "Paypalrajbhandari@yopmail.com",
-  password: "Test@1234",
-  confirmPassword: "Test@1234",
+  username: "raddish.slow@yopmail.com",
+  password: "Test@1234@",
+  confirmPassword: "Test@1234@",
 };

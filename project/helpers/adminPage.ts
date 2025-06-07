@@ -1,7 +1,7 @@
 import { Locator, Page, expect } from "@playwright/test";
-// import { UserData } from "../fixtures/employee";
+import { UserData } from "../fixtures/testData";
 
-export class DashboardPage {
+export class AdminPage {
   readonly page: Page;
   readonly userNameMenu: Locator;
   readonly dropDownMenu: Locator;
@@ -20,6 +20,9 @@ export class DashboardPage {
   readonly clickToSave: Locator;
   readonly essOption: Locator;
   readonly selectEmployeeName: Locator;
+  readonly rowLocator: Locator;
+  readonly tableLocator: Locator;
+  readonly deleteButton: Locator;
 
   constructor(page: Page) {
     this.userNameMenu = page.locator(
@@ -51,7 +54,7 @@ export class DashboardPage {
 
     this.EmployNameInput = page.getByPlaceholder("Type for hints...");
     this.selectEmployeeName = page.locator(
-      "xpath=//span [text()='Paypal Raj Bhandari']"
+      "xpath=//span [text()='Paypal Raj Bhandari']" 
     );
     this.userNameInput = page.locator(
       "xpath =(//input[contains(@class, 'oxd-input') and @autocomplete='off'])[1] "
@@ -61,9 +64,11 @@ export class DashboardPage {
       "xpath=(//input[@type='password'])[2]"
     );
     this.clickToSave = page.locator(
-      "xpath=//button[@class='oxd-button oxd-button--medium oxd-button--secondary orangehrm-left-space']"
+      "xpath=//button[text()=' Save ']"
     );
     this.essOption = page.locator("xpath=//span[text()='ESS']");
+    this.tableLocator = page.locator("xpath=//div[@class='orangehrm-container']")
+    this.deleteButton = page.locator("xpath=//div[normalize-space()='admin@diagonal.software']/div[1]")
   }
 
   async adduser(
@@ -93,7 +98,7 @@ export class DashboardPage {
       await this.essOption.click(); // it will click the ESS option
 
       await this.clickOnstatus.waitFor({ state: "visible", timeout: 5000 });
-      await this.clickOnstatus.click();
+      await this.clickOnstatus.click(); //it will click on status option
       await this.clickToEnabled.waitFor({ state: "visible", timeout: 5000 });
       await this.clickToEnabled.click(); //it will click on the Enabled option
       await this.EmployNameInput.fill(employeeName); //it will fill the employee name
@@ -104,20 +109,36 @@ export class DashboardPage {
       await this.selectEmployeeName.click(); //it will select to the employee
       await this.userNameInput.fill(username); //it will fill username
       await this.passwordInput.fill(password); //it will fill password
-      await this.confirmPasswordInput.fill(confirmPassword);
-      await this.clickToSave.click();
+      await this.confirmPasswordInput.fill(confirmPassword); //it will fillconfirmpassword
+      await this.clickToSave.click();  //it will click to save button
     } catch (error: any) {
       throw new Error(`Unable to add user,${error}`);
     }
   }
-  async logout() {
+   async deleteUser() {
     try {
-      await this.userNameMenu.waitFor({ state: "visible", timeout: 5000 });
-      await this.userNameMenu.click();
-      await this.dropDownMenu.waitFor({ state: "visible", timeout: 5000 });
-      await this.logoutButton.click();
+      await this.adminButton.waitFor({ state: "visible", timeout: 5000 });
+      await this.adminButton.click(); // it will click on the Admin option of the sidebar
+      await this.tableLocator.waitFor({state:"visible", timeout:10000}) // wait for the table data to be visibles
+      
+      // const username = 'admin@diagonal.softwaree';
+      await this.deleteButton.click()
+
+      
     } catch (error: any) {
-      throw new Error(`Unable to logout from system,,${error}`);
+      throw new Error(`Unable to delete user,${error}`);
+    }
+  }
+  async logout() {
+    try { 
+      await this.page.goto('https://orangehr.demo.diagonal.software/web/index.php/admin/viewSystemUsers');
+       await this.page.locator('table').scrollIntoViewIfNeeded();
+       const rowLocator = this.page.locator('table tbody tr', {
+    has:this.page.locator(`text="${UserData.username}"`)
+  });
+   await rowLocator.waitFor({ state: 'visible', timeout: 5000 });
+    } catch (error: any) {
+      throw new Error(`Unable to Delete user,${error}`);
     }
   }
 }
