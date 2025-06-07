@@ -1,7 +1,7 @@
 {
   "name": "orangehrm-automation",
   "version": "1.0.0",
-  "description": "Automation Scripts for OrangeHRM Why Playwright?   Playwright is used for automation due to: - Native support for Chromium, Firefox, WebKit - Built-in test runner and fixtures - Screenshot, video, and trace capturing - Auto-waiting for elements - Rich HTML reports",
+  "description": "Automation Scripts for OrangeHRM",
   "main": "index.js",
   "scripts": {
     "test": "playwright test"
