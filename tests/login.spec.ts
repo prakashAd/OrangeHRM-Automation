@@ -1,6 +1,6 @@
 import { test, expect } from "playwright/test";
 import { LoginPage } from "../helpers/loginPage";
-import { ValidCredentials, InvalidCredentials } from "../fixtures/testData";
+import { ValidCredentials, InvalidCredentials } from "../utils/testData";
 
 test.describe("login tests", () => {
   test("Successful login with valid credentials", async ({ page }) => {

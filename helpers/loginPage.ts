@@ -6,9 +6,11 @@ export class LoginPage {
   readonly passwordInput: Locator;
   readonly loginButton: Locator;
   readonly errorMessage: Locator;
+  readonly baseUrl: string;
 
   constructor(page: Page) {
     this.page = page;
+    this.baseUrl = process.env.BASE_URL || 'https://orangehr.demo.diagonal.software/web/index.php/auth/login';
 
     // Initialize all locators
     this.usernameInput = page.locator("xpath=//input[@placeholder='Username']");
@@ -25,9 +27,7 @@ export class LoginPage {
   async goto(): Promise<void> {
     // Add your base URL here
     try {
-      await this.page.goto(
-        "https://orangehr.demo.diagonal.software/web/index.php/auth/login"
-      );
+      await this.page.goto(this.baseUrl)
     } catch (error) {
       throw new Error(`Navigation to base  url is failed,${error}`);
     }
@@ -47,7 +47,7 @@ export class LoginPage {
     }
   }
 
-  // error assertion
+  // Error assertion
   async assertErrorMessage(expectedText: string): Promise<void> {
     await expect(this.errorMessage).toHaveText(expectedText);
   }

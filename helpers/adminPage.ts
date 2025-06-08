@@ -1,5 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { UserData } from "../fixtures/testData";
+import { UserData } from "../utils/testData";
 
 export class AdminPage {
   readonly page: Page;

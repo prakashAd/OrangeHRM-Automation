@@ -1,7 +1,7 @@
 import { test } from "@playwright/test";
 import { AdminPage } from "../helpers/adminPage";
 import { LoginPage } from "../helpers/loginPage";
-import { UserData, ValidCredentials } from "../fixtures/testData";
+import { UserData, ValidCredentials } from "../utils/testData";
 
 // Addition of new user
 test("Create new user", async ({ page }) => {
@@ -20,7 +20,7 @@ test("Create new user", async ({ page }) => {
 });
 
 //Updating a existing user
-test.only("Update a existing user", async ({ page }) => {
+test("Update a existing user", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const adminPage = new AdminPage(page);
   await loginPage.goto();

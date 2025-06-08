@@ -1,7 +1,7 @@
 
 import { test } from "@playwright/test";
 import { LoginPage } from "../helpers/loginPage";
-import { ValidCredentials } from "../fixtures/testData";
+import { ValidCredentials } from "../utils/testData";
 import { DashboardPage } from "../helpers/logoutPage";
 
 //logouts the user from system

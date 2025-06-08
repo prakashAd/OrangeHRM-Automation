@@ -9,12 +9,11 @@ Why Playwright?
 - Rich HTML reports
 
 
-
  Test Types & Prioritization
   Priority | Description                          
 
- P0         Login, Add Employee, Logout          
- P1         Edit/Delete Employee, View Records   
+ P0         Login, Add User, Logout          
+ P1         Edit/Delete User, View Records   
  P2         Role-based access, negative scenarios
 
   Test Types:
